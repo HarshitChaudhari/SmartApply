@@ -1,54 +1,42 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from agents.job_finder import get_job_finder_agent
 
 router = APIRouter()
 
 class JobSearchRequest(BaseModel):
     query: str
 
-MOCK_JOBS = [
-    {
-        "title": "Computer Vision Intern",
-        "company": "TCS Research",
-        "location": "Pune, India",
-        "type": "Internship",
-        "link": "https://careers.tcs.com",
-        "description": "Work on real-time object detection and image segmentation using PyTorch and OpenCV."
-    },
-    {
-        "title": "ML Engineer Intern",
-        "company": "Wipro AI Labs",
-        "location": "Bangalore, India",
-        "type": "Internship",
-        "link": "https://careers.wipro.com",
-        "description": "Build and deploy machine learning models for computer vision applications."
-    },
-    {
-        "title": "AI Research Intern",
-        "company": "Samsung R&D",
-        "location": "Noida, India",
-        "type": "Internship",
-        "link": "https://samsung.com/careers",
-        "description": "Research on deep learning models for image recognition and video analytics."
-    },
-    {
-        "title": "Computer Vision Engineer Intern",
-        "company": "Ola Electric",
-        "location": "Bangalore, India",
-        "type": "Internship",
-        "link": "https://olaelectric.com/careers",
-        "description": "Develop vision systems for autonomous vehicle perception pipeline."
-    },
-    {
-        "title": "Deep Learning Intern",
-        "company": "Mu Sigma",
-        "location": "Bangalore, India",
-        "type": "Internship",
-        "link": "https://musigma.com/careers",
-        "description": "Apply CNNs and transformers for visual data analysis and pattern recognition."
-    }
-]
-
 @router.post("/search")
 async def search_jobs(request: JobSearchRequest):
-    return {"success": True, "jobs": MOCK_JOBS, "query": request.query}
+    try:
+        agent = get_job_finder_agent()
+        result = agent.invoke({
+            "messages": [{
+                "role": "user",
+                "content": f"""Search for real job listings for: {request.query}
+                
+For each job found return exactly this format:
+- Title: job title
+- Company: company name  
+- Location: city, country
+- Type: Full-time/Internship/Contract
+- Link: application URL
+- Description: one sentence about the role
+
+Find at least 4-5 real jobs."""
+            }]
+        })
+        print("=== FULL RESULT ===")
+        print(result)
+        messages = result.get("messages", [])
+        print(f"=== MESSAGE COUNT: {len(messages)} ===")
+        for i, msg in enumerate(messages):
+            print(f"MSG {i} type={type(msg).__name__} content={str(msg.content)[:300]}")
+        
+        final = messages[-1].content if messages else "No results found"
+        print(f"=== FINAL: {final[:300]} ===")
+        return {"success": True, "result": final}
+    except Exception as e:
+        print(f"=== ERROR: {e} ===")
+        return {"success": False, "error": str(e)}

@@ -3,15 +3,6 @@ import axios from "axios"
 
 const tabs = ["Job Finder", "Career Coach"]
 
-interface Job {
-  title: string
-  company: string
-  location: string
-  type: string
-  link: string
-  description: string
-}
-
 interface Analysis {
   skills_found: string[]
   skills_missing: string[]
@@ -29,7 +20,7 @@ export default function App() {
 
   // Job Finder state
   const [query, setQuery] = useState("")
-  const [jobs, setJobs] = useState<Job[]>([])
+  const [result, setResult] = useState("")
   const [loadingJobs, setLoadingJobs] = useState(false)
   const [searched, setSearched] = useState(false)
 
@@ -42,11 +33,11 @@ export default function App() {
   const searchJobs = async () => {
     if (!query.trim()) return
     setLoadingJobs(true)
-    setJobs([])
+    setResult("")
     setSearched(false)
     try {
       const res = await axios.post("http://localhost:8000/jobs/search", { query })
-      setJobs(res.data.jobs || [])
+      setResult(res.data.result || "No results found")
       setSearched(true)
     } catch (e) {
       console.error("Error:", e)
@@ -121,40 +112,13 @@ export default function App() {
             {loadingJobs && (
               <div className="flex items-center gap-3 text-gray-400 text-sm">
                 <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                Searching for jobs...
+                Agent is searching for real jobs...
               </div>
             )}
 
-            {searched && jobs.length === 0 && (
-              <p className="text-gray-400 text-sm">No jobs found. Try a different query.</p>
-            )}
-
-            {jobs.length > 0 && (
-              <div className="space-y-4">
-                <p className="text-sm text-gray-400">{jobs.length} jobs found</p>
-                {jobs.map((job, i) => (
-                  <div key={i} className="bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-purple-500 transition-colors">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-white">{job.title}</h3>
-                        <p className="text-purple-400 text-sm mt-0.5">{job.company}</p>
-                        <div className="flex items-center gap-3 mt-2">
-                          <span className="text-xs text-gray-400">📍 {job.location}</span>
-                          <span className="text-xs bg-gray-800 px-2 py-0.5 rounded-full text-gray-300">{job.type}</span>
-                        </div>
-                        <p className="text-gray-400 text-sm mt-3 leading-relaxed">{job.description}</p>
-                      </div>
-                      <a
-                        href={job.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
-                      >
-                        Apply
-                      </a>
-                    </div>
-                  </div>
-                ))}
+            {result && (
+              <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">
+                {result}
               </div>
             )}
           </div>
