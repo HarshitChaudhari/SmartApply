@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.jobs import router as jobs_router
+from routes.career import router as career_router
 
 app = FastAPI(title="SmartApply API")
 
@@ -13,6 +14,7 @@ app.add_middleware(
 )
 
 app.include_router(jobs_router, prefix="/jobs", tags=["Jobs"])
+app.include_router(career_router, prefix="/career", tags=["Career"])
 
 @app.get("/health")
 def health():
