@@ -97,7 +97,7 @@ export default function App() {
   const [file, setFile] = useState<File | null>(null)
   const [jobRole, setJobRole] = useState("")
   const [analysis, setAnalysis] = useState<Analysis | null>(null)
-  const [loadingAnalysis, setLoadingAnalysis] = useState(false)
+  const [_loadingAnalysis, setLoadingAnalysis] = useState(false)
   const [coachStep, setCoachStep] = useState<CoachStep>(1)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
