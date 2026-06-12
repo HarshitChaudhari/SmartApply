@@ -111,7 +111,7 @@ export default function App() {
     setRawResult("")
     setSearched(false)
     try {
-      const res = await axios.post("https://smartapply-bebp.onrender.com", { query: searchQuery })
+      const res = await axios.post("https://smartapply-bebp.onrender.com/jobs/search", { query: searchQuery })
       const raw = res.data.result || ""
       const parsed = parseJobs(raw)
       if (parsed.length > 0) {
@@ -145,7 +145,7 @@ export default function App() {
       const formData = new FormData()
       formData.append("file", file)
       formData.append("job_role", jobRole)
-      const res = await axios.post("https://smartapply-bebp.onrender.com", formData)
+      const res = await axios.post("https://smartapply-bebp.onrender.com/career/analyze", formData)
       setAnalysis(res.data.analysis)
       setCoachStep(3)
     } catch (e) {
