@@ -38,6 +38,7 @@ Respond in this exact JSON format with no extra text:
 {{
   "skills_found": ["skill1", "skill2", "skill3"],
   "skills_missing": ["skill1", "skill2", "skill3"],
+  "skills_found and skills_missing must be SHORT skill names only (max 3 words each). Examples: Python, React, Docker, AWS. Never write sentences in skills.",
   "match_score": 75,
   "interview_questions": [
     "question 1",
