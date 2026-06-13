@@ -61,7 +61,7 @@ function AnimatedScore({ target }: { target: number }) {
   return <>{val}</>
 }
 
-function SkeletonCard({ isMobile }: { isMobile: boolean }) {
+function SkeletonCard() {
   return (
     <div style={{ background: "#111820", border: "0.5px solid #1a2a3e", borderRadius: 14, padding: 18 }}>
       <div style={{ display: "flex", gap: 10, marginBottom: 14 }}>
@@ -102,7 +102,7 @@ export default function App() {
   const [file, setFile] = useState<File | null>(null)
   const [jobRole, setJobRole] = useState("")
   const [analysis, setAnalysis] = useState<Analysis | null>(null)
-  const [loadingAnalysis, setLoadingAnalysis] = useState(false)
+  const [_loadingAnalysis, setLoadingAnalysis] = useState(false)
   const [coachStep, setCoachStep] = useState<CoachStep>(1)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -268,7 +268,7 @@ export default function App() {
                   Searching for real jobs...
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12 }}>
-                  {[1, 2, 3, 4].map(i => <SkeletonCard key={i} isMobile={isMobile} />)}
+                  {[1, 2, 3, 4].map(i => <SkeletonCard key={i} />)}
                 </div>
               </div>
             )}
