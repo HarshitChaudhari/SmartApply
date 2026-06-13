@@ -193,8 +193,8 @@ export default function App() {
       {/* Desktop Sidebar */}
       {!isMobile && (
         <div style={{ width: 200, background: "#0d1218", borderRight: "0.5px solid #1a2332", display: "flex", flexDirection: "column", position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 10 }}>
-          <div style={{ padding: "16px 18px", borderBottom: "0.5px solid #1a2332", display: "flex", alignItems: "center", gap: 10 }}>
-            <img src="/logo.png" width="26" height="26" alt="SmartApply logo" style={{ borderRadius: 6 }} />
+          <div style={{ padding: "16px 18px", borderBottom: "0.5px solid #1a2332", display: "flex", alignItems: "center", gap: 8 }}>
+            <img src="/logo.png" width="32" height="32" alt="SmartApply logo" style={{ borderRadius: 6 }} />
             <span style={{ fontSize: 15, fontWeight: 500, color: "#e2ecf4" }}>SmartApply</span>
             <span style={{ fontSize: 10, background: "#0d2040", color: "#378ADD", padding: "2px 7px", borderRadius: 20 }}>beta</span>
           </div>
